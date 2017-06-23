@@ -1,3 +1,3 @@
-eulerSolver.cpp
+eulerSolver.C
 
-EXE = solver
+EXE = $(FOAM_USER_APPBIN)/compressibleFoam_PM
