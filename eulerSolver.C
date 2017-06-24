@@ -24,10 +24,21 @@
 
 int main(int argc, char *argv[])
 {
+   /// Register cmd line inputs
+   Foam::argList::addOption( "mach", "Mach number");
+   Foam::argList::addOption( "aoa", "Angle of attack" );
+   Foam::argList::addOption( "cfl", "CFL number" );
    #include "setRootCase.H"
+   /// Default values
+   scalar M_inf, aoa, CFL;
+   if( args.optionReadIfPresent( "mach", M_inf ) == false )
+     Info << "Need a Mach number input " << Foam::FatalError;
+   /// read AOA
+   if( args.optionReadIfPresent( "aoa", aoa ) == false ) aoa = 0.0;
+   /// Read CFL
+   if( args.optionReadIfPresent( "cfl", CFL ) == false ) CFL = 0.8;
    #include "createTime.H"
    #include "createMesh.H"
-   #include "setInputValues.H"
 
    #include "createFields.H"
    #include "readFluxScheme.H"
