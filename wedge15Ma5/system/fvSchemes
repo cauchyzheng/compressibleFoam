@@ -15,41 +15,20 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-//fluxScheme      Kurganov;
-fluxScheme      roe;
+fluxScheme      roe; // [roe, van_leer]
 
-ddtSchemes
+divSchemes
 {
-    default         Euler;
+	default		none;
+	div(tauMC)      Gauss linear;
 }
-
 gradSchemes
 {
     default         Gauss linear;
 }
-
-divSchemes
-{
-    default         none;
-    div(tauMC)      Gauss linear;
-}
-
 laplacianSchemes
 {
     default         Gauss linear corrected;
-}
-
-interpolationSchemes
-{
-    default         linear;
-    reconstruct(rho) vanLeer;
-    reconstruct(U)  vanLeerV;
-    reconstruct(T)  vanLeer;
-}
-
-snGradSchemes
-{
-    default         corrected;
 }
 
 

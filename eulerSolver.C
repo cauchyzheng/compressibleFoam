@@ -28,7 +28,9 @@ int main(int argc, char *argv[])
    Foam::argList::addOption( "mach", "Mach number");
    Foam::argList::addOption( "aoa", "Angle of attack" );
    Foam::argList::addOption( "cfl", "CFL number" );
+
    #include "setRootCase.H"
+
    /// Default values
    scalar M_inf, aoa, CFL;
    if( args.optionReadIfPresent( "mach", M_inf ) == false )
@@ -37,12 +39,27 @@ int main(int argc, char *argv[])
    if( args.optionReadIfPresent( "aoa", aoa ) == false ) aoa = 0.0;
    /// Read CFL
    if( args.optionReadIfPresent( "cfl", CFL ) == false ) CFL = 0.8;
+
+   // openfoam headers
    #include "createTime.H"
    #include "createMesh.H"
 
+   // local headers
    #include "createFields.H"
    #include "readFluxScheme.H"
       
+
+
+   Info<<"Boundary Condition types summary:"<<endl;
+   // output all boundary informations
+   forAll ( mesh.boundaryMesh() , ipatch ) {
+     word BCTypePhysical = mesh.boundaryMesh().physicalTypes()[ipatch];
+     word BCType         = mesh.boundaryMesh().types()[ipatch];
+     word BCName         = mesh.boundaryMesh().names()[ipatch];
+     Info<<"\tBoundary patch:"<<ipatch<<endl;
+     Info<<"\t\tBCTypePhysical="<<BCTypePhysical<<"\n\t\tBCType="<<BCType<<"\n\t\tBCName="<<BCName<<endl;
+   }
+
    /// Time step loop
    /// Posts the non-blocking send/recv of fields
    long int iter = 0;
@@ -63,6 +80,7 @@ int main(int argc, char *argv[])
      #include "stateUpdateLTS.H"
 
       Info << " Max residue = " << rhoResidMax << endl;
+
      /// Solution output
      runTime.write();
    }

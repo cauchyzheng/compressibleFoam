@@ -20,6 +20,8 @@
 
 /// Loop over internal faces and get face flux from L and R cell center
 label leftCell , rightCell;
+//Info<< mesh.owner().size()<<endl;
+//Info<<mesh.neighbour().size()<<endl;
 forAll( mesh.owner() , iface ) {
   /// Get the left and right cell index
   leftCell = mesh.owner()[iface];
